@@ -9,10 +9,12 @@ h, s, v = cv2.split(img_hsv)
 
 plt.figure(figsize=(10,7))
 
-mask = s
+mask = np.zeros(h.shape, dtype=np.uint8)
 
-mask[((h > 80) & (h < 140)& (s > 70))] = 255
+mask[(((0 < h) & (h < 2) )| ((150 < h) & (h< 180)) & (10< s))] = 255
 mask_3ch = cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR)
+
+mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, np.ones((41,41),np.uint8))
 
 result_img = cv2.bitwise_and(img_bgr,mask_3ch)
 
